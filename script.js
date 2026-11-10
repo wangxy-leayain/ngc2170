@@ -117,10 +117,15 @@ const hudPos = document.getElementById("hud-pos");
 (function compare() {
   const stage = document.getElementById("compare");
   const range = document.getElementById("compare-range");
+  let queued = false;
   function update() {
+    queued = false;
     stage.style.setProperty("--pos", range.value + "%");
   }
-  range.addEventListener("input", update);
+  // Apply at most one update per screen frame while dragging.
+  range.addEventListener("input", () => {
+    if (!queued) { queued = true; requestAnimationFrame(update); }
+  });
   update();
 })();
 
@@ -344,12 +349,21 @@ const hudPos = document.getElementById("hud-pos");
       ctx.fill();
     }
 
-    requestAnimationFrame(frame);
+    if (visible) requestAnimationFrame(frame);
+    else running = false;
   }
+
+  // Only animate while the dust box is on screen, so it does not slow
+  // down scrolling or the slider elsewhere on the page.
+  let visible = false;
+  let running = false;
+  new IntersectionObserver((entries) => {
+    visible = entries[0].isIntersecting;
+    if (visible && !running) { running = true; requestAnimationFrame(frame); }
+  }).observe(canvas);
 
   window.addEventListener("resize", resize);
   resize();
-  frame();
 })();
 
 

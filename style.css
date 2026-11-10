@@ -96,7 +96,7 @@ a { color: var(--accent2); }
 }
 .hud span { color: #5b6275; margin-right: 6px; }
 .hud b { color: var(--accent2); font-weight: 400; }
-@media (max-width: 1180px) { .hud { display: none; } }
+@media (max-width: 1399px) { .hud { display: none; } }
 
 /* ---------- Sections ---------- */
 main { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
@@ -160,27 +160,35 @@ figcaption {
 }
 .layer-ir { background-image: url("images/infrared.jpg"); }
 .layer-visible { background-image: url("images/visible.jpg"); }
+/* The visible image sits in a clipping box. Moving the box and the image
+   in opposite directions with transforms only, so dragging stays smooth. */
+.visible-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform: translateX(calc(var(--pos, 100%) - 100%));
+  will-change: transform;
+}
 .layer-visible {
   position: absolute;
-  top: 0;
-  left: 0;
-  clip-path: inset(0 calc(100% - var(--pos, 100%)) 0 0);
+  inset: 0;
+  transform: translateX(calc(100% - var(--pos, 100%)));
+  will-change: transform;
 }
 .compare-handle {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: var(--pos, 100%);
-  width: 2px;
-  background: var(--accent);
+  inset: 0;
+  transform: translateX(calc(var(--pos, 100%) - 100%));
+  border-right: 2px solid var(--accent);
   pointer-events: none;
+  will-change: transform;
 }
 .compare-handle::after {
   content: "◀ ▶";
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  right: 0;
+  transform: translate(50%, -50%);
   font-size: 10px;
   color: var(--bg);
   background: var(--accent);
