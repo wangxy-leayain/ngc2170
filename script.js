@@ -14,31 +14,31 @@ const HOTSPOTS = [
     id: "cluster",
     x: 56.3, y: 50.5,
     title: "Central young star cluster",
-    text: "[Your text: the dense cluster of young, massive stars at the centre.]"
+    text: "The dense central core is less than 2 light-years across and contains many young, massive stars. The most massive stars are less than ten million years old (European Southern Observatory 2010)."
   },
   {
     id: "ngc2170",
     x: 62.1, y: 53.0,
     title: "NGC 2170",
-    text: "NGC 2170 is a reflection nebula. Dust scatters blue light more strongly than red light."
+    text: "NGC 2170 is a reflection nebula. Dust scatters blue light more strongly than red light (UNSW School of Physics n.d.b)."
   },
   {
     id: "outflows",
     x: 52.2, y: 54.3,
     title: "Pink and red outflows",
-    text: "The glowing pink and red features are likely gas flowing away from young stars (European Southern Observatory 2010)."
+    text: "In the image, the glowing pink and red features are likely gas flowing away from young stars (European Southern Observatory 2010)."
   },
   {
     id: "streamers",
     x: 54.3, y: 26.2,
     title: "Dust streamers",
-    text: "[Your text: how winds and radiation from young stars shape the dust.]"
+    text: "The strong stellar winds and radiation from young, hot stars have shaped the surrounding dust and gas into long streamers (European Southern Observatory 2010)."
   },
   {
     id: "dark",
     x: 57.8, y: 71.3,
     title: "Dark dust",
-    text: "[Your text: why some areas still look dark.]"
+    text: "Infrared light is not scattered as much as visible light (UNSW School of Physics n.d.c), so thick dust clouds become nearly transparent (European Southern Observatory/J. Emerson/VISTA/Digitized Sky Survey 2 2010). The dark patches that remain are probably where the dust is thickest."
   }
 ];
 
@@ -218,28 +218,36 @@ const hudPos = document.getElementById("hud-pos");
    ========================================================= */
 
 (function scrolly() {
-  const steps = document.querySelectorAll(".step");
+  const steps = Array.from(document.querySelectorAll(".step"));
   const stages = document.querySelectorAll(".stage");
+  const figure = document.querySelector(".scrolly-figure");
+  const phone = window.matchMedia("(max-width: 760px)");
+  let ticking = false;
 
-  function show(n) {
-    stages.forEach((s) => s.classList.toggle("active", s.dataset.stage === n));
-    steps.forEach((s) => s.classList.toggle("active", s.dataset.stage === n));
+  function update() {
+    ticking = false;
+    const vh = window.innerHeight;
+    // Text scrolling under the top bar (or under the diagram on phones)
+    // only fades once at least half of the step has moved past this line.
+    const topLine = phone.matches ? figure.getBoundingClientRect().bottom : 60;
+    let current = "1";
+    steps.forEach((s) => {
+      const r = s.getBoundingClientRect();
+      const middle = (r.top + r.bottom) / 2;
+      const bright = r.top < vh * 0.8 && middle > topLine;
+      s.classList.toggle("active", bright);
+      // The diagram shows the last step whose top has reached mid-screen.
+      if (r.top < vh * 0.5) current = s.dataset.stage;
+    });
+    stages.forEach((g) => g.classList.toggle("active", g.dataset.stage === current));
   }
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) show(entry.target.dataset.stage);
-    });
-  }, {
-    // On phones the diagram covers the top of the screen,
-    // so a step becomes active when it reaches the lower part.
-    rootMargin: window.matchMedia("(max-width: 760px)").matches
-      ? "-62% 0px -28% 0px"
-      : "-45% 0px -45% 0px"
-  });
-
-  steps.forEach((s) => observer.observe(s));
-  show("1");
+  function onScroll() {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  update();
 })();
 
 
