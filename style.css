@@ -1,0 +1,401 @@
+/* ---------- Colours and fonts ---------- */
+:root {
+  --bg: #05060a;
+  --panel: #0d1018;
+  --line: #222838;
+  --text: #e8eaf0;
+  --muted: #8d93a5;
+  --accent: #ff7aa8;   /* pink, like the outflows */
+  --accent2: #9fd3ff;  /* blue, like NGC 2170 */
+  --font-display: "Unbounded", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: var(--accent2); }
+
+/* ---------- Boot screen ---------- */
+#boot {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 8vw;
+  font-family: var(--font-mono);
+  color: var(--accent2);
+  cursor: pointer;
+  transition: opacity 0.5s;
+}
+#boot.done { opacity: 0; pointer-events: none; }
+#boot pre { margin: 0; font-size: 15px; white-space: pre-wrap; }
+.boot-skip { color: var(--muted); font-size: 12px; margin-top: 24px; }
+
+/* ---------- Top bar ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  background: rgba(5, 6, 10, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.brand {
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+.topbar nav { display: flex; gap: 18px; flex-wrap: wrap; }
+.topbar nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+}
+.topbar nav a:hover { color: var(--text); }
+
+/* ---------- HUD readout ---------- */
+.hud {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 15;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+  background: rgba(13, 16, 24, 0.8);
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+}
+.hud span { display: inline-block; width: 52px; color: #5b6275; }
+.hud b { color: var(--accent2); font-weight: 400; }
+
+/* ---------- Sections ---------- */
+main { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+
+section { padding: 96px 0 48px; border-bottom: 1px solid var(--line); }
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
+h1, h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0 0 24px;
+}
+h1 { font-size: clamp(40px, 8vw, 88px); }
+h2 { font-size: clamp(28px, 5vw, 48px); }
+h3 { font-size: 20px; margin: 0 0 8px; }
+
+.subtitle { color: var(--muted); font-size: 20px; margin: -8px 0 40px; }
+
+.prose { max-width: 680px; margin-top: 32px; }
+.prose p { margin: 0 0 18px; }
+
+/* Placeholder paragraphs for text still to be written */
+.todo {
+  border: 1px dashed #5b6275;
+  color: var(--muted);
+  padding: 10px 14px;
+  font-style: italic;
+}
+
+figure { margin: 0; }
+figcaption {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* ---------- Compare slider (Home) ---------- */
+.compare-stage {
+  position: relative;
+  border: 1px solid var(--line);
+  user-select: none;
+}
+.compare-layer {
+  /* Both images are 1229 x 969 pixels, cropped from eso1039b */
+  aspect-ratio: 1229 / 969;
+  width: 100%;
+  max-width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.layer-ir { background-image: url("images/infrared.jpg"); }
+.layer-visible { background-image: url("images/visible.jpg"); }
+.layer-visible {
+  position: absolute;
+  top: 0;
+  left: 0;
+  clip-path: inset(0 calc(100% - var(--pos, 100%)) 0 0);
+}
+.compare-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pos, 100%);
+  width: 2px;
+  background: var(--accent);
+  pointer-events: none;
+}
+.compare-handle::after {
+  content: "◀ ▶";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  color: var(--bg);
+  background: var(--accent);
+  padding: 6px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.compare-tag {
+  position: absolute;
+  top: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 3px 8px;
+  background: rgba(5, 6, 10, 0.7);
+  pointer-events: none;
+}
+.tag-left { left: 12px; color: var(--accent2); }
+.tag-right { right: 12px; color: var(--accent); }
+.compare-stage input[type="range"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+}
+
+/* Keep the big images within the screen height on laptops */
+.compare-stage { max-width: calc(78vh * 1229 / 969); margin: 0 auto; }
+.apod-frame { max-width: calc(78vh * 1.27); margin: 0 auto; }
+
+/* ---------- APOD image with hotspots ---------- */
+.apod-frame { position: relative; border: 1px solid var(--line); cursor: crosshair; }
+.hotspot {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  /* Pink ring with a dark halo so it stands out on bright nebulae */
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  padding: 0;
+}
+.hotspot::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  animation: ping 2s infinite;
+}
+.hotspot:hover { background: rgba(255, 122, 168, 0.35); }
+.hotspot:focus-visible { outline: 2px solid var(--accent2); }
+@keyframes ping {
+  0% { transform: scale(0.6); opacity: 1; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+.apod-readout {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent2);
+  background: rgba(5, 6, 10, 0.75);
+  padding: 4px 8px;
+  pointer-events: none;
+}
+
+.popover {
+  position: fixed;
+  z-index: 30;
+  max-width: 320px;
+  background: var(--panel);
+  border: 1px solid var(--accent);
+  padding: 16px 18px;
+  font-size: 15px;
+  line-height: 1.6;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+.popover h3 { color: var(--accent); font-size: 16px; }
+.popover p { margin: 0; }
+.popover-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* ---------- Scroll-driven star formation diagram ---------- */
+.scrolly {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 24px;
+}
+.scrolly-figure {
+  position: sticky;
+  top: 18vh;   /* a bit lower than the top, but not centred */
+  height: fit-content;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+#stage-svg { width: 100%; display: block; }
+.stage { opacity: 0; transition: opacity 0.6s; }
+.stage.active { opacity: 1; }
+.svg-label {
+  fill: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-anchor: middle;
+}
+.svg-arrow { stroke: var(--accent2); stroke-width: 2; }
+.step {
+  min-height: 70vh;
+  padding: 24px 0;
+  opacity: 0.35;
+  transition: opacity 0.4s;
+}
+.step.active { opacity: 1; }
+
+/* ---------- Dust and wind canvas ---------- */
+.wind { margin-top: 48px; }
+#wind-canvas {
+  width: 100%;
+  height: 360px;
+  display: block;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  cursor: none;
+  touch-action: none;
+}
+
+/* ---------- Discovery section ---------- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.stats div { background: var(--panel); padding: 20px; }
+.stats b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 36px;
+  color: var(--accent2);
+}
+.stats span { font-size: 14px; color: var(--muted); line-height: 1.4; display: block; }
+.stats-source { font-size: 13px; color: var(--muted); }
+
+.sky { margin-top: 32px; }
+#sky-canvas {
+  width: 100%;
+  height: 380px;
+  display: block;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+.sky-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 12px;
+}
+.sky-controls button {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--accent2);
+  padding: 8px 14px;
+  cursor: pointer;
+}
+.sky-controls button:hover { background: #18202e; }
+#sky-count { font-family: var(--font-mono); font-size: 13px; color: var(--accent); }
+
+/* ---------- References ---------- */
+.refs ul { list-style: none; padding: 0; }
+.refs li {
+  padding-left: 2em;
+  text-indent: -2em;   /* hanging indent */
+  margin-bottom: 12px;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+.ai-note { font-size: 14px; color: var(--muted); }
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 40px 24px 80px;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 760px) {
+  body { font-size: 17px; }
+  .topbar nav { display: none; }
+  .hud { display: none; }
+  .scrolly { grid-template-columns: 1fr; }
+  .scrolly-figure { top: 56px; z-index: 5; }
+  #stage-svg { max-height: 34vh; }
+  .step { min-height: 60vh; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Respect readers who turn off animations */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hotspot::after { animation: none; }
+  .stage, .step, #boot { transition: none; }
+}

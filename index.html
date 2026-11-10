@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seeing Through the Dust | Star Birth in Monoceros R2</title>
+  <meta name="description" content="An interactive explainer about NGC 2170 and the Monoceros R2 star-forming region.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Opening "boot" screen. Click or press any key to skip. -->
+  <div id="boot" aria-hidden="true">
+    <pre id="boot-text"></pre>
+    <p class="boot-skip">click to skip</p>
+  </div>
+
+  <!-- Top navigation -->
+  <header class="topbar">
+    <a class="brand" href="#home">MON&nbsp;R2</a>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#image">The image</a>
+      <a href="#formation">Star birth</a>
+      <a href="#discovery">Discovery</a>
+      <a href="#references">References</a>
+    </nav>
+  </header>
+
+  <!-- Small instrument-style readout in the corner -->
+  <aside class="hud" aria-hidden="true">
+    <div><span>TARGET</span> Monoceros R2</div>
+    <div><span>DIST</span> ~2,700 ly</div>
+    <div><span>BAND</span> <b id="hud-band">visible</b></div>
+    <div><span>POS</span> <b id="hud-pos">--</b></div>
+  </aside>
+
+  <main>
+
+    <!-- ===== Section 1: Home ===== -->
+    <section id="home" data-band="visible → infrared">
+      <p class="kicker">Astronomy Picture of the Day · 15 October 2010</p>
+      <h1>Seeing Through<br>the Dust</h1>
+      <p class="subtitle">Star birth in Monoceros R2</p>
+
+      <figure class="compare">
+        <div class="compare-stage" id="compare">
+          <div class="compare-layer layer-ir" role="img" aria-label="Infrared view of Monoceros R2"></div>
+          <div class="compare-layer layer-visible" role="img" aria-label="Visible-light view of Monoceros R2"></div>
+          <div class="compare-handle" aria-hidden="true"></div>
+          <span class="compare-tag tag-left">VISIBLE</span>
+          <span class="compare-tag tag-right">INFRARED</span>
+          <input type="range" id="compare-range" min="0" max="100" value="100"
+                 aria-label="Drag to switch between the visible and infrared views">
+        </div>
+        <figcaption>Figure 1: Visible (left) and infrared (right) views of Monoceros R2. Drag the slider to compare (European Southern Observatory/J. Emerson/VISTA/Digitized Sky Survey 2 2010), © European Southern Observatory</figcaption>
+      </figure>
+
+      <div class="prose">
+        <p>First, look at the visible-light image of this region of space. Thick clouds of dust cover most of it. Large areas look dark and empty. Only a few faint blue clouds shine through.</p>
+        <p>But what is hidden behind the dust?</p>
+        <p>Now, switch to the infrared image to find out.</p>
+        <p>In the infrared view, you can see long streamers of dust, pink glowing structures, and a cluster of young stars. They were hidden from view before.</p>
+        <p>This region is called Monoceros R2. It is a star-forming region about 2,700 light-years from Earth. Its brightest blue cloud is a reflection nebula called NGC 2170 (European Southern Observatory 2010).</p>
+        <p>Why do the two images look so different? Dust blocks and scatters visible light. Infrared light has longer wavelengths, so it passes through the dust more easily and reveals the hidden stars.</p>
+        <p>Regions like this are called stellar nurseries. Next, we will explore how stars are born inside these cold, dense molecular clouds.</p>
+      </div>
+    </section>
+
+    <!-- ===== Section 2: What is in the image ===== -->
+    <section id="image" data-band="near-infrared">
+      <p class="kicker">02</p>
+      <h2>What is in the image?</h2>
+
+      <figure class="apod" id="apod">
+        <div class="apod-frame">
+          <img src="images/apod-ngc2170.jpg" alt="Near-infrared VISTA image of NGC 2170 and the Monoceros R2 star-forming region" id="apod-img">
+          <div id="hotspots"></div>
+          <div class="apod-readout" id="apod-readout">Move over the image</div>
+        </div>
+        <figcaption>Figure 2: Vista with NGC 2170 (European Southern Observatory/J. Emerson/VISTA 2010), © European Southern Observatory. Click the dots to explore. The readout shows distances in light-years.</figcaption>
+      </figure>
+
+      <div class="popover" id="popover" hidden>
+        <button class="popover-close" id="popover-close" aria-label="Close">×</button>
+        <h3 id="popover-title"></h3>
+        <p id="popover-text"></p>
+      </div>
+
+      <div class="prose">
+        <p class="todo">[Your text: what a giant molecular cloud is and what it is made of. (Lecture 5)]</p>
+        <p class="todo">[Your text: where molecular clouds are found in the Milky Way, and why they look dark. (Lecture 5)]</p>
+        <p class="todo">[Your text: why NGC 2170 looks blue in visible light, and what a reflection nebula is. (Lecture 5)]</p>
+        <p class="todo">[Your text: the size of the image (about 80 light-years) compared with something familiar.]</p>
+      </div>
+    </section>
+
+    <!-- ===== Section 3: How stars and planets form ===== -->
+    <section id="formation" data-band="near-infrared">
+      <p class="kicker">03</p>
+      <h2>How stars and planets form</h2>
+
+      <div class="scrolly">
+        <div class="scrolly-figure">
+          <svg id="stage-svg" viewBox="0 0 400 400" role="img" aria-label="Diagram of star formation in four stages">
+            <defs>
+              <radialGradient id="g-cloud" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#7a5c8f" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#2a1d3a" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="g-core" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffb3c7"/>
+                <stop offset="60%" stop-color="#b0507a" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#2a1d3a" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="g-star" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="40%" stop-color="#ffe9b0"/>
+                <stop offset="100%" stop-color="#ffb347" stop-opacity="0"/>
+              </radialGradient>
+              <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#9fd3ff"/>
+              </marker>
+            </defs>
+
+            <!-- Stage 1: cold cloud -->
+            <g class="stage" data-stage="1">
+              <ellipse cx="200" cy="200" rx="170" ry="140" fill="url(#g-cloud)"/>
+              <text x="200" y="380" class="svg-label">1 · Cold molecular cloud (10–30 K)</text>
+            </g>
+
+            <!-- Stage 2: collapse -->
+            <g class="stage" data-stage="2">
+              <ellipse cx="200" cy="200" rx="90" ry="80" fill="url(#g-core)"/>
+              <line x1="40"  y1="200" x2="100" y2="200" marker-end="url(#arrow)" class="svg-arrow"/>
+              <line x1="360" y1="200" x2="300" y2="200" marker-end="url(#arrow)" class="svg-arrow"/>
+              <line x1="200" y1="40"  x2="200" y2="105" marker-end="url(#arrow)" class="svg-arrow"/>
+              <line x1="200" y1="360" x2="200" y2="295" marker-end="url(#arrow)" class="svg-arrow"/>
+              <text x="200" y="380" class="svg-label">2 · Gravity wins: the core collapses</text>
+            </g>
+
+            <!-- Stage 3: protostar, disk and jets -->
+            <g class="stage" data-stage="3">
+              <path d="M200 200 L185 40 L215 40 Z" fill="#ff7aa8" opacity="0.7"/>
+              <path d="M200 200 L185 360 L215 360 Z" fill="#ff7aa8" opacity="0.7"/>
+              <ellipse cx="200" cy="200" rx="130" ry="22" fill="#c98a5a" opacity="0.75"/>
+              <circle cx="200" cy="200" r="26" fill="url(#g-star)"/>
+              <text x="200" y="380" class="svg-label">3 · Protostar, disk and jets</text>
+            </g>
+
+            <!-- Stage 4: planets in the disk -->
+            <g class="stage" data-stage="4">
+              <ellipse cx="200" cy="200" rx="160" ry="28" fill="none" stroke="#c98a5a" stroke-width="10" opacity="0.5"/>
+              <ellipse cx="200" cy="200" rx="105" ry="18" fill="none" stroke="#c98a5a" stroke-width="8" opacity="0.5"/>
+              <ellipse cx="200" cy="200" rx="60"  ry="10" fill="none" stroke="#c98a5a" stroke-width="6" opacity="0.5"/>
+              <circle cx="200" cy="200" r="30" fill="url(#g-star)"/>
+              <circle cx="320" cy="214" r="7" fill="#8ec5ff"/>
+              <circle cx="110" cy="190" r="5" fill="#e0b080"/>
+              <text x="200" y="380" class="svg-label">4 · Planets form in the disk</text>
+            </g>
+          </svg>
+        </div>
+
+        <div class="scrolly-steps">
+          <div class="step" data-stage="1">
+            <h3>A cold, dense cloud</h3>
+            <p class="todo">[Your text: molecular clouds are cold (10–30 K), so their pressure is low. (Lecture 6)]</p>
+          </div>
+          <div class="step" data-stage="2">
+            <h3>Gravity takes over</h3>
+            <p class="todo">[Your text: gravity overcomes pressure, the cloud breaks into clumps, and stars form in groups. (Lecture 6)]</p>
+          </div>
+          <div class="step" data-stage="3">
+            <h3>A protostar with a disk and jets</h3>
+            <p class="todo">[Your text: the rotating disk and jets. Link to the pink outflows in Figure 2 (European Southern Observatory 2010). (Lecture 6)]</p>
+          </div>
+          <div class="step" data-stage="4">
+            <h3>Planets, and our own Solar System</h3>
+            <p class="todo">[Your text: planets form in the disk, and our Solar System formed in a similar way. (Lecture 8)]</p>
+          </div>
+        </div>
+      </div>
+
+      <figure class="wind">
+        <canvas id="wind-canvas" aria-label="Interactive dust particles that move away from your cursor"></canvas>
+        <figcaption>Try it: move your cursor (or finger) through the dust. You are a hot young star. Your wind and radiation push the dust away. (Simplified illustration.)</figcaption>
+      </figure>
+    </section>
+
+    <!-- ===== Section 4: Latest discoveries ===== -->
+    <section id="discovery" data-band="visible (Gaia)">
+      <p class="kicker">04</p>
+      <h2>Latest discoveries</h2>
+
+      <div class="stats">
+        <div><b data-count="1690">0</b><span>earlier candidate young stars</span></div>
+        <div><b data-count="308">0</b><span>confirmed as highly probable members</span></div>
+        <div><b data-count="651">0</b><span>new members found with Gaia</span></div>
+        <div><b data-count="959">0</b><span>members in total</span></div>
+      </div>
+      <p class="stats-source">Numbers from Jiang and Hillenbrand (2024).</p>
+
+      <figure class="sky">
+        <canvas id="sky-canvas" aria-label="Illustration of stars being filtered by their motion"></canvas>
+        <div class="sky-controls">
+          <button id="btn-motion">Show motions</button>
+          <button id="btn-filter">Keep stars moving together</button>
+          <button id="btn-reset">Reset</button>
+          <span id="sky-count"></span>
+        </div>
+        <figcaption>Stars in the same cluster move across the sky together. Keeping only the stars that share one motion picks out the cluster. (Simplified illustration, not real Gaia data.)</figcaption>
+      </figure>
+
+      <div class="prose">
+        <p class="todo">[Your text: what Jiang and Hillenbrand (2024) did with Gaia data, and what they found.]</p>
+        <p class="todo">[Your text: how proper motions (Lecture 5) and cluster ages from the HR diagram (Lecture 6) helped them.]</p>
+        <p class="todo">[Your text: why this matters: different wavelengths work together to reveal the full cluster.]</p>
+      </div>
+    </section>
+
+    <!-- ===== References ===== -->
+    <section id="references" class="refs" data-band="--">
+      <h2>References</h2>
+      <ul>
+        <li>European Southern Observatory 2010, <i>VISTA reveals the secret of the Unicorn</i>, media release, accessed 15 October 2026, &lt;https://www.eso.org/public/news/eso1039/&gt;.</li>
+        <li>European Southern Observatory/J. Emerson/VISTA 2010, Vista with NGC 2170, digital image, Astronomy Picture of the Day, NASA, accessed 15 October 2026, &lt;https://apod.nasa.gov/apod/ap101015.html&gt;.</li>
+        <li>European Southern Observatory/J. Emerson/VISTA/Digitized Sky Survey 2 2010, Infrared/visible light comparison of views of a stellar nursery in Monoceros, digital image, European Southern Observatory, accessed 15 October 2026, &lt;https://www.eso.org/public/images/eso1039b/&gt;.</li>
+        <li>Jiang, SD &amp; Hillenbrand, LA 2024, 'The emerging stellar complex in Mon R2: membership and optical variability classification', <i>The Astronomical Journal</i>, vol. 167, no. 5, p. 221, DOI:10.3847/1538-3881/ad2fb0.</li>
+      </ul>
+      <p class="ai-note">AI use: [Your AI acknowledgement statement.]</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Made by Xinyan Wang for PHYS1160, UNSW Sydney.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
