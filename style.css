@@ -101,7 +101,8 @@ a { color: var(--accent2); }
 /* ---------- Sections ---------- */
 main { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
 
-section { padding: 96px 0 48px; border-bottom: 1px solid var(--line); }
+section { padding: 72px 0 40px; border-bottom: 1px solid var(--line); }
+#home { padding-top: 44px; }
 
 .kicker {
   font-family: var(--font-mono);
@@ -514,6 +515,86 @@ footer {
   .facts .fact:first-child { grid-column: 1 / -1; }
   .scale-row { grid-template-columns: 1fr 56px; }
   .scale-name { grid-column: 1 / -1; }
+}
+
+/* ---------- Added: APOD intro, spectrum, nebula types ---------- */
+.apod-intro {
+  font-size: 15px;
+  color: var(--muted);
+  border-left: 2px solid var(--accent2);
+  padding-left: 14px;
+}
+.spectrum { margin: 8px 0 26px; }
+.spectrum-bar {
+  height: 12px;
+  background: linear-gradient(90deg, #4f7dff 0%, #6fd0ff 18%, #8cf08c 36%, #ffe066 52%, #ff5a4a 70%, #7a1f2e 84%, #2a1018 100%);
+}
+.spectrum-key {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.spectrum-key span:nth-child(2) { text-align: center; }
+.spectrum-key span:nth-child(3) { text-align: right; }
+.spectrum-key b {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.spectrum figcaption {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+.card-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent2);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+.types {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 8px;
+}
+.type {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 16px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.type p { margin: 10px 0 0; }
+.type-tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.type-here { border-color: var(--accent2); }
+.type-here .type-tag { color: var(--accent2); }
+.type-note {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent2);
+}
+@media (max-width: 760px) {
+  .types { grid-template-columns: 1fr; }
+  .spectrum-key { font-size: 12px; }
 }
 
 /* Respect readers who turn off animations */
