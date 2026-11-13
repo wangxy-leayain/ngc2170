@@ -14,7 +14,7 @@ const HOTSPOTS = [
     id: "cluster",
     x: 56.3, y: 50.5,
     title: "Central young star cluster",
-    text: "The dense central core is less than 2 light-years across and contains many young, massive stars. The most massive stars are less than ten million years old (European Southern Observatory 2010)."
+    text: "The dense central core is less than 2 light-years across and contains many young, massive stars. Even the most massive of these stars formed less than ten million years ago (European Southern Observatory 2010)."
   },
   {
     id: "ngc2170",
